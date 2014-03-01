@@ -17,6 +17,7 @@ sched.start()
 ics_url = 'http://www.google.com/calendar/ical/dallasmakerspace.org_6ipmavoef85vn59hlsbhgei4ok%40group.calendar.google.com/public/basic.ics'
 
 # class for finding the differences between old and new event dictionary
+# http://stackoverflow.com/questions/1165352/fast-comparison-between-two-python-dictionary
 class DictDiffer(object):
     """
     Calculate the difference between two dictionaries as:
@@ -38,6 +39,7 @@ class DictDiffer(object):
     def unchanged(self):
         return set(o for o in self.intersect if self.past_dict[o] == self.current_dict[o])
 
+# https://github.com/yozel/talking-bots/blob/master/tts_google.py
 def speak(text='hello', lang='en', fname='result.wav', player='mplayer'):
     """ Send text to Google's text to speech service
     and returns created speech (wav file). """
