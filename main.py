@@ -1,7 +1,3 @@
-import sys
-from calendar_parser import CalendarParser
-from time import sleep
-from apscheduler.scheduler import Scheduler
 import urllib2
 import urllib
 import time
@@ -9,6 +5,9 @@ import os
 import sys
 import pprint
 import datetime
+from calendar_parser import CalendarParser
+from time import sleep
+from apscheduler.scheduler import Scheduler
 
 sched = Scheduler()
 sched.start()
