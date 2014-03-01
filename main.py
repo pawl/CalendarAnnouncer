@@ -81,7 +81,8 @@ def updateEvents(oldEvents):
 	return newEvents
 
 def addEvent(eventName, eventStartTime):
-	#TODO: handle events with duplicate time
+	#TODO: test how it handles events with duplicate time
+	#TODO: handle all day events differently
 	job = sched.add_date_job(lambda: speak(text=eventName), eventStartTime)
 	if job:
 		print "event added: ", eventName, eventStartTime
