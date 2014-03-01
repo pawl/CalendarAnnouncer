@@ -70,14 +70,12 @@ def getCalendarEvents():
 			eventsDict[event["name"] + str(event["start_time"])] = {"name": event["name"], "start_time": event["start_time"]}
 	return eventsDict
 
-# define the function that is to be executed
-# it will be executed in a thread by the scheduler
 def updateEvents(oldEvents):
 	newEvents = getCalendarEvents()
 	d = DictDiffer(newEvents, oldEvents)
 	for eventKey in d.added():
 		job = sched.add_date_job(lambda: speak(text=newEvents[eventKey]["name"]), newEvents[eventKey]["start_time"])
-	#TODO remove jobs after they are removed from the calendar
+	#TODO: remove jobs after they are removed from the calendar
 	#for event in d.removed():
 	return newEvents
 
