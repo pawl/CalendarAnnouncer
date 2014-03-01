@@ -41,7 +41,7 @@ class DictDiffer(object):
 def speak(text='hello', lang='en', fname='result.wav', player='mplayer'):
     """ Send text to Google's text to speech service
     and returns created speech (wav file). """
-
+    print text
     limit = min(100, len(text))#100 characters is the current limit.
     text = text[0:limit]
     url = "http://translate.google.com/translate_tts"
@@ -64,6 +64,7 @@ def getCalendarEvents():
 	eventsDict = {} # ensure uniqueness by using a dict
 	for event in cal.parse_calendar():
 		if event["start_time"] > datetime.datetime.now():
+			#TODO: add second event for 5 minutes before start
 			eventsDict[event["name"] + str(event["start_time"])] = {"name": event["name"], "start_time": event["start_time"]}
 	return eventsDict
 
@@ -84,6 +85,8 @@ def main():
 		print event["start_time"]
 		print key
 		# without lambda, there is an error about the function not being callable
+		#TODO: add second event for 5 minutes before start
+		#TODO: change text to include time
 		job = sched.add_date_job(lambda: speak(text=event["name"]), event["start_time"])
 	while True:
 		sleep(10800) # update every 3 hours
