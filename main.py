@@ -81,8 +81,8 @@ def updateEvents(oldEvents):
 
 def addEvent(eventName, eventStartTime):
 	job = sched.add_date_job(lambda: speak(text=eventName), eventStartTime)
-		if job:
-                        print "event added: ", eventName, eventStartTime
+	if job:
+		print "event added: ", eventName, eventStartTime
                         
 def main():
 	events = getCalendarEvents()
