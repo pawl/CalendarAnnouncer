@@ -74,12 +74,14 @@ def updateEvents(oldEvents):
 	newEvents = getCalendarEvents()
 	d = DictDiffer(newEvents, oldEvents)
 	for eventKey in d.added():
-		addEvent(newEvents[eventKey]["name"], newEvents[eventKey]["start_time"])
+		addEvent(newEvents[eventKey]["name"] + " will begin in 5 minutes", newEvents[eventKey]["start_time"] - datetime.timedelta(minutes=5))
+		addEvent(newEvents[eventKey]["name"] + " is starting now", newEvents[eventKey]["start_time"])
 	#TODO: remove jobs after they are removed from the calendar
 	#for event in d.removed():
 	return newEvents
 
 def addEvent(eventName, eventStartTime):
+	#TODO: handle events with duplicate time
 	job = sched.add_date_job(lambda: speak(text=eventName), eventStartTime)
 	if job:
 		print "event added: ", eventName, eventStartTime
@@ -90,10 +92,11 @@ def main():
 		# without lambda, there is an error about the function not being callable
 		#TODO: add second event for 5 minutes before start
 		#TODO: change text to include time
+		addEvent(event["name"] + " will begin in 5 minutes", event["start_time"] - datetime.timedelta(minutes=5))
 		addEvent(event["name"], event["start_time"])
-	# add a test event 30 seconds from now
-	secondsFromNow = datetime.datetime.now() + datetime.timedelta(seconds=30)
-	addEvent("Calendar announcer is starting now", secondsFromNow)
+	# add a test event 10 seconds from now
+	secondsFromNow = datetime.datetime.now() + datetime.timedelta(seconds=10)
+	addEvent("Calendar announcer has started", secondsFromNow)
 	while True:
 		sleep(10800) # update every 3 hours
 		events = updateEvents(events)
