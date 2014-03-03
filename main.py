@@ -5,6 +5,7 @@ import os
 import sys
 import pprint
 import datetime
+import mp3play
 from calendar_parser import CalendarParser
 from time import sleep
 from apscheduler.scheduler import Scheduler
@@ -39,7 +40,7 @@ class DictDiffer(object):
         return set(o for o in self.intersect if self.past_dict[o] == self.current_dict[o])
 
 # https://github.com/yozel/talking-bots/blob/master/tts_google.py
-def speak(text='hello', lang='en', fname='result.wav', player='mplayer'):
+def speak(text='hello', lang='en', fname='result.mp3'):
     """ Send text to Google's text to speech service
     and returns created speech (wav file). """
     print text
@@ -54,11 +55,10 @@ def speak(text='hello', lang='en', fname='result.wav', player='mplayer'):
     f = open(fname, 'wb')
     f.write(p.read())
     f.close()
-    play_wav(fname, player)
-
-
-def play_wav(filep, player='mplayer'):
-    os.system(player + " " + filep + ">/dev/null")
+    mp3 = mp3play.load(fname)
+    mp3.play()
+    while mp3.isplaying():
+        sleep(1)
 
 def getCalendarEvents():
 	cal = CalendarParser(ics_url=ics_url)
@@ -95,7 +95,7 @@ def main():
 		addEvent("Attention please attention please " + event["name"] + " will begin in 5 minutes", event["start_time"] - datetime.timedelta(minutes=5))
 		addEvent("Attention please attention please " + event["name"] + " is starting now", event["start_time"])
 	# add a test event 10 seconds from now
-	secondsFromNow = datetime.datetime.now() + datetime.timedelta(seconds=10)
+	secondsFromNow = datetime.datetime.now() + datetime.timedelta(seconds=20)
 	addEvent("Calendar announcer has started", secondsFromNow)
 	while True:
 		sleep(10800) # update every 3 hours
