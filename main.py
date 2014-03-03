@@ -80,7 +80,7 @@ def updateEvents(oldEvents):
 	return newEvents
 
 def addEvent(eventName, eventStartTime):
-	#TODO: test how it handles events with duplicate time
+	#TODO: if two events have the same time, both events will not play - need to use a queue instead
 	#TODO: handle all day events differently
 	job = sched.add_date_job(lambda: speak(text=eventName), eventStartTime)
 	if job:
