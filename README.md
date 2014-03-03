@@ -1,7 +1,7 @@
 #### Description
 This application will pull events from Dallas Makerspace's public Google Calendar and announce those events when they occur. It uses Google's TTS webservice for the announcement audio. 
 
-Due to the use of Mp3play, this only works on Windows currently.
+<b>Warning:</b> Due to the use of Mp3play library, this only works on Windows currently.
 
 #### Dependencies
 * pytz
