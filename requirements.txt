@@ -1,0 +1,6 @@
+APScheduler==2.1.2
+BeautifulSoup==3.2.1
+icalendar==3.6.1
+mp3play==0.1.15
+python-dateutil==2.2
+pytz==2013.9
