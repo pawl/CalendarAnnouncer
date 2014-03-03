@@ -1,4 +1,11 @@
-Requires mplayer
+Due to the use of Mp3play, this only works on Windows currently.
+
+Dependencies:
+* pytz
+* icalendar
+* beautifulsoup
+* apscheduler
+* mp3play
 
 Original Google TTS Code From: https://github.com/yozel/talking-bots
 
