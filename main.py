@@ -73,8 +73,8 @@ def updateEvents(oldEvents):
 	newEvents = getCalendarEvents()
 	d = DictDiffer(newEvents, oldEvents)
 	for eventKey in d.added():
-		addEvent(newEvents[eventKey]["name"] + " will begin in 5 minutes", newEvents[eventKey]["start_time"] - datetime.timedelta(minutes=5))
-		addEvent(newEvents[eventKey]["name"] + " is starting now", newEvents[eventKey]["start_time"])
+		addEvent("Attention please attention please " + newEvents[eventKey]["name"] + " will begin in 5 minutes", newEvents[eventKey]["start_time"] - datetime.timedelta(minutes=5))
+		addEvent("Attention please attention please " + newEvents[eventKey]["name"] + " is starting now", newEvents[eventKey]["start_time"])
 	#TODO: remove jobs after they are removed from the calendar
 	#for event in d.removed():
 	return newEvents
