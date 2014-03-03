@@ -1,4 +1,4 @@
-This application will pull events from Dallas Makerspace's public calendar and announce those events when they occur. It uses Google's TTS webservice for the announcement audio. 
+This application will pull events from Dallas Makerspace's public Google Calendar and announce those events when they occur. It uses Google's TTS webservice for the announcement audio. 
 
 Due to the use of Mp3play, this only works on Windows currently.
 
