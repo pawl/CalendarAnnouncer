@@ -92,8 +92,8 @@ def main():
 		# without lambda, there is an error about the function not being callable
 		#TODO: add second event for 5 minutes before start
 		#TODO: change text to include time
-		addEvent(event["name"] + " will begin in 5 minutes", event["start_time"] - datetime.timedelta(minutes=5))
-		addEvent(event["name"], event["start_time"])
+		addEvent("Attention please attention please " + event["name"] + " will begin in 5 minutes", event["start_time"] - datetime.timedelta(minutes=5))
+		addEvent("Attention please attention please " + event["name"] + " is starting now", event["start_time"])
 	# add a test event 10 seconds from now
 	secondsFromNow = datetime.datetime.now() + datetime.timedelta(seconds=10)
 	addEvent("Calendar announcer has started", secondsFromNow)
