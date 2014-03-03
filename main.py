@@ -5,7 +5,7 @@ import os
 import sys
 import pprint
 import datetime
-import mp3play
+import mp3play # only works on windows
 from calendar_parser import CalendarParser
 from time import sleep
 from apscheduler.scheduler import Scheduler
@@ -60,15 +60,16 @@ def speak(text='hello', lang='en', fname='result.mp3'):
     while mp3.isplaying():
         sleep(1)
 
+# gets newest events from the google calendar ical feed
 def getCalendarEvents():
 	cal = CalendarParser(ics_url=ics_url)
 	eventsDict = {} # ensure uniqueness by using a dict
 	for event in cal.parse_calendar():
 		if event["start_time"] > datetime.datetime.now():
-			#TODO: add second event for 5 minutes before start
 			eventsDict[event["name"] + str(event["start_time"])] = {"name": event["name"], "start_time": event["start_time"]}
 	return eventsDict
 
+# checks for new events and adds them to the scheduler
 def updateEvents(oldEvents):
 	newEvents = getCalendarEvents()
 	d = DictDiffer(newEvents, oldEvents)
@@ -80,8 +81,9 @@ def updateEvents(oldEvents):
 	return newEvents
 
 def addEvent(eventName, eventStartTime):
-	#TODO: if two events have the same time, both events will not play - need to use a queue instead
-	#TODO: handle all day events differently
+	#TODO: if two events have the same time, one of the events will not play - need to use a queue instead
+	#TODO: handle all day events differently, possibly by announcing every few hours
+	# without lambda, there is an error about the function not being callable
 	job = sched.add_date_job(lambda: speak(text=eventName), eventStartTime)
 	if job:
 		print "event added: ", eventName, eventStartTime
@@ -89,17 +91,15 @@ def addEvent(eventName, eventStartTime):
 def main():
 	events = getCalendarEvents()
 	for key, event in events.iteritems(): # initial loading of events into scheduler
-		# without lambda, there is an error about the function not being callable
-		#TODO: add second event for 5 minutes before start
-		#TODO: change text to include time
 		addEvent("Attention please attention please " + event["name"] + " will begin in 5 minutes", event["start_time"] - datetime.timedelta(minutes=5))
 		addEvent("Attention please attention please " + event["name"] + " is starting now", event["start_time"])
-	# add a test event 10 seconds from now
-	secondsFromNow = datetime.datetime.now() + datetime.timedelta(seconds=20)
+	secondsFromNow = datetime.datetime.now() + datetime.timedelta(seconds=5)
 	addEvent("Calendar announcer has started", secondsFromNow)
 	while True:
 		sleep(10800) # update every 3 hours
 		events = updateEvents(events)
 
-main()
+# debug, print events
 #pprint.pprint(getCalendarEvents())
+main()
+
