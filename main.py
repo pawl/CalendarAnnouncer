@@ -39,6 +39,12 @@ class DictDiffer(object):
     def unchanged(self):
         return set(o for o in self.intersect if self.past_dict[o] == self.current_dict[o])
 
+def playMp3(filename):
+    mp3 = mp3play.load(filename)
+    mp3.play()
+    while mp3.isplaying():
+        sleep(1)
+   
 # https://github.com/yozel/talking-bots/blob/master/tts_google.py
 def speak(text='hello', lang='en', fname='result.mp3'):
     """ Send text to Google's text to speech service
@@ -55,10 +61,8 @@ def speak(text='hello', lang='en', fname='result.mp3'):
     f = open(fname, 'wb')
     f.write(p.read())
     f.close()
-    mp3 = mp3play.load(fname)
-    mp3.play()
-    while mp3.isplaying():
-        sleep(1)
+    playMp3("begin.mp3")
+    playMp3(fname)
 
 # gets newest events from the google calendar ical feed
 def getCalendarEvents():
@@ -74,8 +78,8 @@ def updateEvents(oldEvents):
 	newEvents = getCalendarEvents()
 	d = DictDiffer(newEvents, oldEvents)
 	for eventKey in d.added():
-		addEvent("Attention please attention please " + newEvents[eventKey]["name"] + " will begin in 5 minutes", newEvents[eventKey]["start_time"] - datetime.timedelta(minutes=5))
-		addEvent("Attention please attention please " + newEvents[eventKey]["name"] + " is starting now", newEvents[eventKey]["start_time"])
+		addEvent(newEvents[eventKey]["name"] + " will begin in 5 minutes", newEvents[eventKey]["start_time"] - datetime.timedelta(minutes=5))
+		addEvent(newEvents[eventKey]["name"] + " is starting now", newEvents[eventKey]["start_time"])
 	#TODO: remove jobs after they are removed from the calendar
 	#for event in d.removed():
 	return newEvents
@@ -91,8 +95,8 @@ def addEvent(eventName, eventStartTime):
 def main():
 	events = getCalendarEvents()
 	for key, event in events.iteritems(): # initial loading of events into scheduler
-		addEvent("Attention please attention please " + event["name"] + " will begin in 5 minutes", event["start_time"] - datetime.timedelta(minutes=5))
-		addEvent("Attention please attention please " + event["name"] + " is starting now", event["start_time"])
+		addEvent(event["name"] + " will begin in 5 minutes", event["start_time"] - datetime.timedelta(minutes=5))
+		addEvent(event["name"] + " is starting now", event["start_time"])
 	secondsFromNow = datetime.datetime.now() + datetime.timedelta(seconds=5)
 	addEvent("Calendar announcer has started", secondsFromNow)
 	while True:
